@@ -5,9 +5,16 @@ from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateMode
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 from .serializers import UserSerializer
+from users.throttles import TimeRestrictionThrottle
 
 User = get_user_model()
+
+
+class UserTokenObtainPairView(TokenObtainPairView):
+    throttle_classes = (TimeRestrictionThrottle,)
 
 
 class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
